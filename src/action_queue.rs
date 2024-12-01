@@ -27,16 +27,23 @@ mod tests {
     #[test]
     fn actions_are_retrieved_in_first_in_first_out_order() {
         let mut action_queue = ActionQueue::new();
-        let actions = vec![""];
+        let actions = vec!["1", "2", "3"];
 
-        for action in &actions {
-            action_queue.add_action((*action).to_owned());
-        }
+        add_actions_to_queue(&actions, &mut action_queue);
+        let retrieved_actions = get_actions_from_queue(action_queue);
+
+        assert_eq!(actions, retrieved_actions);
+    }
+    fn add_actions_to_queue(actions: &[&str], queue: &mut ActionQueue) {
+        actions
+            .iter()
+            .for_each(|action| queue.add_action((*action).to_owned()));
+    }
+    fn get_actions_from_queue(mut action_queue: ActionQueue) -> Vec<Action> {
         let mut retrieved_actions = Vec::<Action>::new();
         while let Some(action) = action_queue.get_next_action() {
             retrieved_actions.push(action);
         }
-
-        assert_eq!(actions, retrieved_actions);
+        retrieved_actions
     }
 }
