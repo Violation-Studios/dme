@@ -1,4 +1,0 @@
-allow-expect-in-tests = true
-allow-unwrap-in-tests = true
-cognitive-complexity-threshold = 2
-too-many-lines-threshold = 1
