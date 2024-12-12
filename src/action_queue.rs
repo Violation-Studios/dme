@@ -1,7 +1,7 @@
 extern crate alloc;
 use alloc::collections::vec_deque::VecDeque;
 
-pub type Action = String;
+type Action = String;
 
 pub struct ActionQueue {
     actions: VecDeque<Action>,
