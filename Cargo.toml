@@ -1,9 +1,17 @@
 [package]
 name = "dme"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
+bevy = "0.16.0"
+crossterm = "0.29.0"
+
+[features]
+default = ["bevy/dynamic_linking"]
+
+[profile.dev]
+opt-level = 1
 
 [lints.clippy]
 all = { level = "deny", priority = -1 }
@@ -24,3 +32,5 @@ unseparated_literal_suffix = "allow"
 question_mark_used = "allow"
 self_named_module_files = "allow"
 missing_trait_methods = "allow"
+arbitrary_source_item_ordering = "allow"
+non_ascii_literal = "allow"

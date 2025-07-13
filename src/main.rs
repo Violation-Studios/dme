@@ -1,25 +1,47 @@
-mod action_queue;
+use bevy::{app::ScheduleRunnerPlugin, input::InputPlugin, prelude::*};
+use core::time::Duration;
 
-use action_queue::ActionQueue;
+mod ui;
+use crate::ui::terminal::Crossterm as Terminal;
+use crate::ui::terminal::Position;
+use crate::ui::terminal::QuantifiedEntry;
+use crate::ui::terminal::Terminal as _;
+use crate::ui::terminal::UIElement as _;
 
 fn main() {
-    let surroundings: Vec<&str> = vec![
-        "A tavern and a smithy are nearby.",
-        "The tavern is entirely empty of people, but the bar seems well-stocked.",
-    ];
-    let mut action_queue = ActionQueue::new();
+    App::new()
+        .add_plugins((
+            MinimalPlugins.set(ScheduleRunnerPlugin::run_loop(Duration::from_secs_f64(
+                0.166,
+            ))),
+            InputPlugin,
+            Terminal::new(),
+        ))
+        .run();
+}
 
-    action_queue.add_action("You decide to enter the tavern.".to_owned());
-    action_queue.add_action("You decide to make yourself a drink. You make a 'Rusty Nail', a drink consisting of Scotch Whisky and Drambuie. The irony of mixing whisky with whisky is not lost on you.".to_owned());
+#[derive(Resource)]
+pub struct WoodCount(u8);
 
-    #[expect(clippy::print_stdout, reason = "I do what I want.")]
-    for description in surroundings {
-        println!("{description}");
-        if let Some(action) = action_queue.get_next_action() {
-            println!("{action}");
-        }
+impl WoodCount {
+    pub const fn increment(&mut self) {
+        self.0 = self.0.saturating_add(1);
     }
 }
 
-#[cfg(test)]
-mod tests {}
+#[expect(
+    clippy::unwrap_used,
+    reason = "Game should crash if terminal setup fails"
+)]
+fn setup_terminal(mut terminal: ResMut<Terminal>) {
+    terminal.setup().unwrap();
+}
+
+#[expect(clippy::needless_pass_by_value, reason = "Bevy convention")]
+fn print_wood_count(wood_count: Res<WoodCount>, mut terminal: ResMut<Terminal>) {
+    let wood_count_display =
+        QuantifiedEntry::new("wood", wood_count.0, Position { x: 2u16, y: 2u16 });
+    wood_count_display
+        .draw(terminal.output_buffer())
+        .unwrap_or(());
+}
