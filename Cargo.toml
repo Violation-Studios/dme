@@ -2,35 +2,48 @@
 name = "dme"
 version = "0.1.0"
 edition = "2024"
+description = "A game engine written in Rust"
+license-file = "LICENSE"
+repository = "https://github.com/Violation-Studios/dme"
+keywords = ["tui", "engine", "game", "terminal", "text-based"]
+categories = ["game-development", "game-engines", "command-line-utilities"]
+readme = "README.md"
 
 [dependencies]
-bevy = "0.16.0"
 crossterm = "0.29.0"
-
-[features]
-default = ["bevy/dynamic_linking"]
-
-[profile.dev]
-opt-level = 1
 
 [lints.clippy]
 all = { level = "deny", priority = -1 }
+cargo = { level = "deny", priority = -1 }
+multiple_crate_versions = "allow"         #for crossterm
+
+complexity = { level = "deny", priority = -1 }
+correctness = { level = "deny", priority = -1 }
+perf = { level = "deny", priority = -1 }
+style = { level = "deny", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
+
 pedantic = { level = "deny", priority = -1 }
 nursery = { level = "deny", priority = -1 }
 
 restriction = { level = "deny", priority = -1 }
 blanket_clippy_restriction_lints = "allow"
 
-missing_docs_in_private_items = "allow"
-missing_errors_doc = "warn"
 cognitive_complexity = "deny"
 too_many_lines = "deny"
 too_many_arguments = "deny"
+
+missing_errors_doc = "warn"
+
+missing_docs_in_private_items = "allow"
+missing_trait_methods = "allow"
+arbitrary_source_item_ordering = "allow"
+
+non_ascii_literal = "allow"
 implicit_return = "allow"
-single_call_fn = "allow"
 unseparated_literal_suffix = "allow"
 question_mark_used = "allow"
 self_named_module_files = "allow"
-missing_trait_methods = "allow"
-arbitrary_source_item_ordering = "allow"
-non_ascii_literal = "allow"
+
+wildcard_enum_match_arm = "allow"
+single_call_fn = "allow"
